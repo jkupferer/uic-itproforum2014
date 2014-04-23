@@ -208,15 +208,28 @@ header .logo {
 <ul>
 <li>Simple access and content managment.</li>
 <li>Simple support for PHP and CGI.</li>
-<li>Support for Ruby, Python, Node.js</li>
+<li>Support for Ruby, Python, Perl, Node.js</li>
 <li>Self provision your own site now!<ul>
  <li>Just visit <a href="http://people.uic.edu/">people.uic.edu</a></li>
 </ul></li>
+<li>Server access with SSH, SFTP, and SMB/CIFS</li>
+<li>Custom DNS domains supported</li>
 </ul>
 </div>
 
 <div class="slide">
 <h1>Group-managed websites on webhost.uic.edu</h1>
+<ul>
+<li>Support for multiple site administrators<ul>
+ <li>Department webmaster liaisons are automatically added!</li>
+</ul></li>
+<li>Same support for PHP, CGI, Ruby, Python, Perl, Node.js<ul>
+ <li>PHP is faster on webhost, but must be enabled.</li>
+ <li>CGI also must be enabled on webhost.</li>
+</ul></li>
+<li>Request webhost by sending email to <a href="mailto:consult@uic.edu">consult@uic.edu</a></li>
+<li>Server access with SSH, SFTP, and SMB/CIFS</li>
+</ul>
 </div>
 
 <div class="slide">
@@ -227,51 +240,145 @@ header .logo {
  <li>Terminal access with Mac/Linux</li>
 </ul></li>
 <li>SFTP</li>
-<li>SMB/CIFS</li>
-<li>OpenVPN for Access</li>
+<li>SMB/CIFS<ul>
+ <li>people.uic.edu<ul>
+  <li>Windows UNC path: \\people.uic.edu\&lt;NETID&gt;
+  <li>From Mac or Linux: smb://people.uic.edu/&lt;NETID&gt;
+  <li>Document root in <tt>public_html</tt> directory</li>
+ </ul></li>
+ <li>webhost.uic.edu<ul>
+  <li>Windows UNC path: \\webhost.uic.edu\&lt;SITENAME&gt;
+  <li>From Mac or Linux: smb://webhost.uic.edu/&lt;SITENAME&gt;
+  <li>Document root in <tt>htdocs</tt> directory</li>
+ </ul></li>
+</ul></li>
+<li>VPN required for Access off campus (<a href="http://openvpn.uic.edu/">openvpn.uic.edu</a>)</li>
 </ul>
 </div>
 
 <div class="slide">
 <h1>File Permissions</h1>
 <ul>
-<li>webhost.uic.edu - users and groups</li>
+<li>Unix file permissions<ul>
+ <li>Three scopes checked in order: User, Group, Others</li>
+ <li>Three types of access<ul>
+  <li>r - read access</li>
+  <li>w - write access</li>
+  <li>x - execute access on a file, content access on a directory</li>
+ </ul></li>
+</ul></li>
+<li>people.uic.edu - Only owner and apache have access.</li>
+<li>webhost.uic.edu - Only content managers and apache have access.</li>
 </ul>
 </div>
 
 <div class="slide">
 <h1>PHP Web development</h1>
 <ul>
-<li>No more codewrap!</li>
-<li>Must be enabled on webhost</li>
-<li>Separate your config and data from your app</li>
-<li>design patterns - mvc, rest</li>
-<li>version control - git</li>
+<li>Simply upload your PHP to your document root<ul>
+ <li>No more ugly codewrap URLs!</li>
+ <li>PHP 5.3.3</li>
+ <li>PHP must be enabled on webhost</li>
+</ul></li>
+<li>Start new with best practices:<ul>
+ <li>Don't hard code configuration</li>
+ <li>Separate your config and data from your app</li>
+ <li>Let us handle your authentication</li>
+ <li>Design patterns - MVC, REST</li>
+ <li>Version control with git</li>
+</ul></li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>How to avoid hard-coded configuration</h1>
+<ul>
+<li>Example in <tt>no-hardcode/</tt></li>
+<li>Read values dynamically:<pre>$hostname = $_SERVER["HTTP_HOST"];
+$page_url = $_SERVER["SCRIPT_URI"];
+$php_user_id = posix_geteuid();
+$php_user_info = posix_getpwuid ( $php_user_id );
+$sitehome = $php_user_info['dir'];
+$phpdir = dirname(__FILE__);</pre></li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Using configs with PHP is easy!</h1>
+<ul>
+<li>Example in <tt>read-config/</tt></li>
+<li>Just call <tt>parse_ini_file()</tt></li>
+<li>Server will automatically block access to <tt>.ini</tt> files in document root</li>
+ <li>Still, it's best to set permissions to block other and apache access</li>
+ <li>Better yet, keep you config files out of your document root</li>
+</ul></li>
 </ul>
 </div>
 
 <div class="slide">
 <h1>User Authentication</h1>
 <ul>
-<li>Bluestem</li>
-<li>Shibboleth</li>
-<li>CA SiteMinder</li>
+<li>Don't setup an application with a separate username &amp; password entry!<ul>
+ <li>(If you can avoid it!)
+</ul></li>
+<li>Bluestem<ul>
+ <li>Continued support at UIC</li>
+ <li>Cross-site adaptor for Urbana in the works</li>
+ <li>Long-term future bluestem becomes a Shibboleth adaptor</li>
+</ul></li>
+<li>Shibboleth<ul>
+ <li>Supported by ACCC</li>
+ <li>UIC and Campus setups</li>
+ <li>Shibboleth setup service on VMs</li>
+</ul></li>
+<li>CA SiteMinder<ul>
+ <li>Supported by AITS</li>
+ <li><a href="http://web.uillinois.edu/iam/SiteMinder">http://web.uillinois.edu/iam/SiteMinder</a></li>
+</ul></li>
 </ul>
 </div>
 
 <div class="slide">
 <h1>PHP Authentication Tips</h1>
 <ul>
-<li>User allowed.netids, check $_SERVER[REMOTE_USER] and $_SERVER[REDIRECT_REMOTE_USER]</li>
-<li>Redirect to /bluestem/cgi/lb_login.cgi/path/to/app</li>
-<li>LDAP for user identification</li>
+<li>Let us handle the logins.</li>
+<li>To force login, just used an <tt>allowed.netids</tt> file:<ul>
+ <li>Example in <tt>login-required/</tt></li>
+ <li>Comment your <tt>allowed.netids</tt> using #</li>
+ <li>To allow a specific list of users:<pre># Fictional characters permitted
+hpotter
+dvader</pre></li>
+ <li>To allow everyone at UIC:<pre>&lt;allow groups&gt;
+all</pre></li>
+</ul></li>
+<li>For optional login, redirect users to <tt>/bluestem/cgi/lb_login.cgi<em>/path/to/app</em></tt><ul>
+ <li>Example in <tt>login-optional/</tt></li>
+</ul>
+<li>In your PHP, check $_SERVER[REMOTE_USER] and $_SERVER[REDIRECT_REMOTE_USER] (webhost)</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Using LDAP for user information</h1>
+<ul>
+<li>LDAP for user identification<ul>
+ <li>Example in <tt>login-userinfo/</tt></li>
+ <li>Server: <tt>ldap.uic.edu</tt></li>
+ <li>Base DN: <tt>ou=people,dc=uic,dc=edu</tt></li>
+ <li>Search: <tt>(&amp;(uid=$this-&gt;netid)(primarypid=true))</tt></li>
+ <li>Interesting Attributes: <tt>displayname</tt>, <tt>ou</tt></li>
+</ul></li>
 </ul>
 </div>
 
 <div class="slide">
 <h1>Datbase Access</h1>
 <ul>
-<li>databases - sqlite3, mysql, PDO</li>
+<li>MySQL and SQLite3</li>
+<li>Use PDO, prevent SQL injection<ul>
+ <li>Prepared statements, bind_param functionality</li>
+ <li>Database agnostic api</li>
+</ul></li>
 </ul>
 </div>
 
