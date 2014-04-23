@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>UIC IT Professionals Forum - Webhosting with UIC</title>
+
+<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/dojo/1.9.2/dojo/resources/dojo.css"> 
+<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/dojo/1.9.2/dijit/themes/claro/claro.css">
+
+<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.9.2/dojo/dojo.js" data-dojo-config="async: true"></script>
+<script>
+require([
+    "dojo/ready", "dojo/dom", "dojo/parser", "dojo/query",
+    "dojo/_base/array",
+    "dojo/on",
+    "dijit/Toolbar",
+    "dijit/form/Button"
+], function(
+    ready, dom, parser, query,
+    array
+) {
+
+window.current_slide_n = function ()
+{
+    var slides = query(".slide");
+    for( i in slides ) {
+        var slide = slides[i];
+        if( slide.style.display == 'block' )
+            return parseInt(i);
+    }
+    return 0; // Shouldn't ever get here...
+}
+
+window.show_slide = function (n)
+{
+    var slides = query(".slide");
+    if( n < 0 )
+        n = 0;
+    if( n >= slides.length )
+        n = slides.length - 1;
+    array.forEach( slides, function(slide) {
+        slide.style.display = 'none';
+    });
+    slides[n].style.display = 'block';
+}
+
+ready( function() {
+    parser.parse().then(function () {
+        show_slide(0);
+    });
+});
+
+});
+</script>
+
+<style type="text/css">
+header {
+   margin: 0;
+   padding: 0;
+   width: 100%;
+   height: 118px;
+   position: relative;
+}
+header h1 {
+   font-family: sans-serif;
+   font-size: 30pt;
+   font-weight: bold;
+   padding-top: 10px;
+   padding-bottom: 5px;
+   padding-left: 120px;
+   margin: 0;
+}
+header h2 {
+   font-family: sans-serif;
+   font-size: 20pt;
+   font-weight: bold;
+   padding-left: 120px;
+   margin: 0;
+}
+header .logo {
+   padding: 5px;
+   margin: 5px;
+   border-right: 1pt solid #d00;
+   vertical-align: top;
+   float: left;
+   height: 88px;
+   width: 80px;
+}
+.slide {
+   display: none;
+   padding: 10pt 20pt;
+   font-size: 18pt;
+}
+.slide h1 {
+   font-family: sans-serif;
+   font-weight: bold;
+   font-size: 25pt;
+}
+</style>
+
+</head>
+<body class="claro">
+<header>
+<img src="uic-logo.png" alt="UIC - University of Illiois at Chicago" class="logo">
+<h1>ACCC Web Hosting</h1>
+<h2>IT Professionals Forum 2014</h2>
+<br style="clear: both">
+<div data-dojo-type="dijit/Toolbar">
+  <button type="button" data-dojo-type="dijit/form/Button">first
+    <script type="dojo/on" data-dojo-event="click">
+      show_slide(0);
+    </script>
+  </button>
+  <button type="button" data-dojo-type="dijit/form/Button">prev
+    <script type="dojo/on" data-dojo-event="click">
+      show_slide(current_slide_n() - 1);
+    </script>
+  </button>
+  <button type="button" data-dojo-type="dijit/form/Button">next
+    <script type="dojo/on" data-dojo-event="click">
+      show_slide(current_slide_n() + 1);
+    </script>
+  </button>
+  <button type="button" data-dojo-type="dijit/form/Button">last
+    <script type="dojo/on" data-dojo-event="click">
+      show_slide(9999);
+    </script>
+  </button>
+</div>
+</header>
+
+<div class="slide">
+<h1>Welcome to our Web Hosting Workshop</h1>
+<ul>
+<li>So many options to build and host a website!</li>
+<li>Content management systems and frameworks.</li>
+<li>Personal websites on people.uic.edu.</li>
+<li>Group-managed websites on webhost.uic.edu.</li>
+<li>Site management made easier.</li>
+<li>Modern web-development platform and tools.</li>
+<li>Secure application development.</li>
+<li>Lots of tips and tricks.</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>So many options to build and host a website!</h1>
+<ul>
+<li>Hosting with UIC<ul>
+ <li>New options: people.uic.edu, webhost.uic.eud</li>
+ <li>Hosting on www.uic.edu (Tigger)</li>
+ <li>Wordpress on publish.uic.edu</li>
+ <li>UIC Google Sites</li>
+ <li>ACCC Microsoft IIS Hosting</li>
+</ul></li>
+<li>Hosting with your own server<ul>
+ <li>ACCC virtual servers</li>
+ <li>Running your own data center?</li>
+</ul></li>
+<li>External webhosting...</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Manage your URL</h1>
+<ul>
+<li>Custom DNS domains</li>
+<li>Webalias and CNAME records</li>
+<li>Short URL (go.uic.edu)<ul>
+ <li>Provided by illinois.edu public affairs <a href="http://illinois.edu/webtools/">webtools</a></li>
+</ul></li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Content Management Systems and Frameworks</h1>
+<ul>
+<li>Content Management Systems<ul>
+ <li>WordPress</li>
+ <li>Drupal</li>
+ <li>SitePublish by Intrafinity (AITS)</li>
+</ul></li>
+<li>Frameworks<ul>
+ <li>Ruby on Rails</li>
+ <li>PHP Symfony</li>
+ <li>Django (Python)</li>
+</ul></li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>You've got a site, now what? Where are you going to host it?</h1>
+</div>
+
+<div class="slide">
+<h1>Proud to be UIC!</h1>
+<ul>
+ <li>The reputation of UIC depends on you!<ul>
+  <li>Use uic.edu DNS domain.</li>
+  <li>Include UIC campus logos on your site.</li>
+ </ul></li>
+ <li><a href="http://www.uic.edu/uic/about/media/logo.shtml">UIC Logo Standards</a></li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Personal Sites: people.uic.edu</h1>
+<ul>
+<li>Simple access and content managment.</li>
+<li>Simple support for PHP and CGI.</li>
+<li>Support for Ruby, Python, Node.js</li>
+<li>Self provision your own site now!<ul>
+ <li>Just visit <a href="http://people.uic.edu/">people.uic.edu</a></li>
+</ul></li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Group-managed websites on webhost.uic.edu</h1>
+</div>
+
+<div class="slide">
+<h1>Access to people.uic.edu and webhost.uic.edu</h1>
+<ul>
+<li>SSH shell access<ul>
+ <li>PuTTY from windows</li>
+ <li>Terminal access with Mac/Linux</li>
+</ul></li>
+<li>SFTP</li>
+<li>SMB/CIFS</li>
+<li>OpenVPN for Access</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>File Permissions</h1>
+<ul>
+<li>webhost.uic.edu - users and groups</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>PHP Web development</h1>
+<ul>
+<li>No more codewrap!</li>
+<li>Must be enabled on webhost</li>
+<li>Separate your config and data from your app</li>
+<li>design patterns - mvc, rest</li>
+<li>version control - git</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>User Authentication</h1>
+<ul>
+<li>Bluestem</li>
+<li>Shibboleth</li>
+<li>CA SiteMinder</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>PHP Authentication Tips</h1>
+<ul>
+<li>User allowed.netids, check $_SERVER[REMOTE_USER] and $_SERVER[REDIRECT_REMOTE_USER]</li>
+<li>Redirect to /bluestem/cgi/lb_login.cgi/path/to/app</li>
+<li>LDAP for user identification</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Datbase Access</h1>
+<ul>
+<li>databases - sqlite3, mysql, PDO</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>It is time to move off of tigger</h1>
+<ul>
+<li>Pick your migration target and start moving.</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Questions?</h1>
+</div>
+
+</body>
+</html>
